@@ -111,9 +111,6 @@
 			opacity: 0.5;
 		}
 
-		canvas{
-			border: 1px solid black;
-		}
 	</style>
 </head>
 <body>
@@ -150,8 +147,33 @@
 
 	function drawSpectrumBar(data){
 		console.log(data);
+		const blockWidth = 30;
+		const blockHeight = 15;
 		var canvas = document.getElementById("canvas");
-		var context = canvas.getContext();
+		var context = canvas.getContext("2d");
+		//clear the whole canvas
+		context.clearRect(0,0,300,300);
+		//context.fillStyle="lightblue";
+		//context.fillRect(0, 0, 300, 300);
+		//start to draw
+		
+		for (var i = 0; i < 7; i++){
+			for(var j = 0; j < data[i] + 1; j++){ //at least draw a line, so add one
+				var startX = 15 + 40 * i;
+				var startY = 300 - (15 + (j+1) * 15 + j * 10);
+				if(data[i] === 1&&j===1){
+					context.fillStyle="orange";
+				}else if(data[i] > 1 && j === data[i]){
+					context.fillStyle="red";
+				}else if(data[i] > 1 && j === data[i] - 1){
+					context.fillStyle="orange";
+				}else{
+					context.fillStyle="deepskyblue";
+				}
+
+				context.fillRect(startX, startY, blockWidth, blockHeight);
+			}
+		}
 	}
 
 	$(".pop-btn").on("click", function(){
@@ -183,7 +205,7 @@
 
 			intervalId = setInterval(function(){
 				drawSpectrumBar(generateRandomData());
-			}, 1000);
+			}, 200);
 
 		}
 	});
